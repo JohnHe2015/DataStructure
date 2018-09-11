@@ -71,14 +71,14 @@ function BinaryTree(){
         else if(k == 1)
         {
           //左子树
-          var top_item_l = stack.pop();
+          var top_item_l = stack.top();
           new_node.parentNode = top_item_l;
           top_item_l.leftChild = new_node;
         }
         else
         {
           //右子树
-          var top_item_r = stack.pop();
+          var top_item_r = stack.top();
           new_node.parentNode = top_item_r;
 					top_item_r.rightChild = new_node;
         }
