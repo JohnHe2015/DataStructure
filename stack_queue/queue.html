@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+<script>
+//define Queue class
+function Queue(){
+	var queueArr = [];
+
+	this.enqueue = function(item){
+		queueArr.push(item);
+	}
+
+	this.dequeue = function()
+	{
+		return queueArr.shift();
+	}
+
+	this.clear = function(){
+		queueArr = [];
+	}
+
+	this.isEmpty = function(){
+		return queueArr.length == 0;
+	}
+
+	this.head = function(){
+		return queueArr[0];
+	}
+
+	this.size = function(){
+		return queueArr.length;
+	}
+
+	this.tail = function(){
+		return queueArr[queueArr.length-1];
+	}
+
+	this.print = function(){
+		console.log(queueArr);
+	}
+}
+
+/****************约瑟夫环***************/
+
+function init_data(){
+	var a = [];
+	for(var i =0;i<100;i++)
+	{
+		a[i] = i;
+	}
+	return a;
+}
+
+
+function ysf_ring(){
+	var queue = new Queue();
+	var arr_data = init_data();
+
+//压数据进队列
+	for(var i =0;i < arr_data.length;i++)
+	{
+		queue.enqueue(arr_data[i]);
+	}
+//
+	var index = 0;
+	while(queue.size() != 1)
+	{
+		var head = queue.dequeue();
+		index += 1;
+		if(index % 3 != 0)
+		{
+			queue.enqueue(head);
+		}
+	}
+
+	return queue.head();	
+}
+
+
+//test
+console.log("约瑟夫环的值	: "+ysf_ring());
+
+
+/****************************************/
+
+
+/*********斐波那契数列(队列)***************/
+function fbnq_arr(n){
+	var queue = new Queue();
+
+	var arr = [1,1];
+	var index = 0;
+
+	queue.enqueue(1);
+	queue.enqueue(1);
+	while(index < n-2) //循环次数
+	{
+		index += 1;
+		var head = queue.dequeue();
+		var tail = queue.tail();
+		var sum = head + tail;
+		queue.enqueue(sum);
+		arr.push(sum);
+	}
+
+	return arr;
+}
+
+//test
+console.log("斐波那契数列: " +fbnq_arr(10));
+
+
+
+/****************************************/
+
+
+
+/*********两个队列实现栈***************/
+
+function Merge_queue_to_stack(){
+	var queue1 = new Queue();
+	var queue2 = new Queue();
+
+	var data_queue = queue1;
+	var null_queue = queue2;
+
+	var init = function(){
+		if(queue1.size() == 0 && queue2.size() == 0)
+		{
+			data_queue = queue1;
+			null_queue = queue2;
+		}
+		else if(queue1.size() > 0)
+		{
+			data_queue = queue1;
+			null_queue = queue2;
+		}
+		else if(queue2.size() > 0)
+		{
+			data_queue = queue2;
+			null_queue = queue1;
+		}
+	}
+
+	this.push = function(item){
+		init();
+		data_queue.enqueue(item);
+	}
+
+	this.pop = function()
+	{
+		init();
+		//把除去队列尾的所有数据转移到空队列中,随后弹出队列尾元素
+		//此时空队列变成数据队列,实现了pop功能
+		for(var i = 0;i < data_queue.size();i++)
+		{
+			var temp = data_queue.dequeue();
+			null_queue.enqueue(temp);
+		} 
+		return data_queue.dequeue();//弹出队列最后个元素并返回
+	}
+
+	this.top = function(){
+		return data_queue.tail();
+	}
+
+	this.print = function(){
+		init();
+		return data_queue.print();
+	}
+}
+
+//test
+var newStack = new Merge_queue_to_stack();
+console.log("------------------------------------");
+console.log("压1,2,4进栈");
+newStack.push(1);
+newStack.push(2);
+newStack.push(4);
+newStack.print();
+console.log("栈顶元素: " + newStack.top()); 
+newStack.pop();
+console.log("栈顶元素出栈.."); 
+newStack.print();
+console.log("------------------------------------");
+
+
+
+
+
+/****************************************/
+
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+
+
+<script>
+
+function Stack(itemArr) {
+	var itemArr = [];	
+
+	this.push = function(item) {
+		itemArr.push(item);
+	};
+
+	this.pop = function() {
+		return itemArr.pop(itemArr.length - 1);
+	};
+
+	this.top = function(){
+		return itemArr[itemArr.length -1];
+	};
+	this.isEmpty = function() {
+		return itemArr.length == 0 ? true : false;
+	};
+
+	this.clear = function() {
+		itemArr = [];
+	};
+
+	this.size = function(){
+		return itemArr.length;
+	};
+}
+
+function min_Stack(){
+	var stack = new Stack();
+	var min_stack = new Stack();
+
+	this.push = function(item){
+		stack.push(item);
+		if(min_stack.isEmpty() || item < min_stack.top())
+		{
+			min_stack.push(item);
+		}
+		else
+		{
+			min_stack.push(min_stack.top());
+		}
+
+	};
+
+	this.pop = function(){
+		stack.pop();
+		min_stack.pop();
+	};
+
+	this.min = function(){
+		return min_stack.pop();
+	};
+
+}
+
+function is_leagl_brackets(str){
+	var stack1 = new Stack();
+	for(var i = 0;i<str.length;i++)
+	{
+		if(str[i] == "(")
+		{
+			stack1.push(str[i]);
+		}
+		else if(str[i] == ")")
+		{
+			if(stack1.isEmpty())
+			{
+				return false;
+			}
+			else
+			{
+				stack1.pop();
+			}
+		}
+	}
+	return stack1.size() == 0
+}
+
+function nifeibo(arr){
+	var stack1 = new Stack(); 
+	var pattern = "+-*/";
+	var result = 0;
+	for(var i =0;i<arr.length;i++)
+	{
+		if(pattern.indexOf(arr[i]) == -1)
+		{
+			stack1.push(arr[i]);
+		}
+		else
+		{
+			var number1 = stack1.top()
+			stack1.pop();
+			var number2 = stack1.top();
+			stack1.pop();
+			result = parseInt(eval(number2+arr[i]+number1));
+			stack1.push(result);
+		}
+	}
+	return stack1.top();
+}
+
+console.log(is_leagl_brackets("(21213)(grg))"));
+console.log(is_leagl_brackets("(())"));
+
+console.log(nifeibo(["4", "13", "5", "/", "+"]));
+console.log(nifeibo(["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]));
+
+
+
+</script>
+</body>
+</html>
